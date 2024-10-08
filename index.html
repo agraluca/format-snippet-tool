@@ -17,8 +17,22 @@
           placeholder="Paste your snippet code here"
           type="text"
           id="snippet"
-          class="p-4 rounded min-h-[300px] resize-none"
+          class="p-4 rounded min-h-[300px] resize-none outline-teal-700"
         ></textarea>
+
+        <input
+          type="text"
+          id="nameOfFile"
+          placeholder="Name of file"
+          class="p-4 rounded w-full outline-teal-700"
+        />
+
+        <input
+          type="text"
+          id="startOfLine"
+          placeholder="Start of line"
+          class="p-4 rounded w-full outline-teal-700"
+        />
 
         <button
           class="bg-teal-900 rounded text-slate-50 px-4 py-3 hover:bg-teal-700 transition-colors"
@@ -31,9 +45,10 @@
   </body>
 
   <script>
-    function formatSnippet(startOfLine, nameOfFile) {
+    function formatSnippet() {
       const snippet = document.getElementById("snippet").value;
-      console.log(snippet);
+      const nameOfFile = document.getElementById("nameOfFile").value;
+      const startOfLine = Number(document.getElementById("startOfLine").value);
 
       const snippetWithoutDoubleQuote = snippet.replace(/"/g, "'");
       const snippetArray = snippetWithoutDoubleQuote.split("\n");
@@ -54,10 +69,16 @@
     }
 
     function copyToClipboard() {
-      const formattedString = formatSnippet(7, "EchoController01");
+      const formattedString = formatSnippet();
       console.log(formattedString);
 
       navigator.clipboard.writeText(formattedString);
+
+      document.getElementById("snippet").value = "";
+      document.getElementById("nameOfFile").value = "";
+      document.getElementById("startOfLine").value = "";
+
+      alert("Copied to clipboard");
     }
   </script>
 </html>
