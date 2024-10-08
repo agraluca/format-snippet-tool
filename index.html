@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Format snippet tool</title>
+  </head>
+  <body>
+    <main
+      class="flex flex-col justify-center items-center bg-slate-900 min-h-screen gap-4"
+    >
+      <h1 class="text-slate-50 text-3xl">Format snippet tool</h1>
+
+      <div class="flex flex-col gap-4 p-4 max-w-[700px] w-full">
+        <textarea
+          placeholder="Paste your snippet code here"
+          type="text"
+          id="snippet"
+          class="p-4 rounded min-h-[300px] resize-none"
+        ></textarea>
+
+        <button
+          class="bg-teal-900 rounded text-slate-50 px-4 py-3 hover:bg-teal-700 transition-colors"
+          onClick="copyToClipboard()"
+        >
+          Format and copy to clipboard
+        </button>
+      </div>
+    </main>
+  </body>
+
+  <script>
+    function formatSnippet(startOfLine, nameOfFile) {
+      const snippet = document.getElementById("snippet").value;
+      console.log(snippet);
+
+      const snippetWithoutDoubleQuote = snippet.replace(/"/g, "'");
+      const snippetArray = snippetWithoutDoubleQuote.split("\n");
+      if (!snippetArray[0]) snippetArray.shift();
+      if (!snippetArray[snippetArray.length - 1]) snippetArray.pop();
+      const formattedArraySnippet = snippetArray.map((item, index) => {
+        if (index === 0)
+          return `File: ${nameOfFile}.py\\nCode: Line${startOfLine}: ${item.trim()}`;
+        return `\\nLine${startOfLine + index}: ${item.trim()}`;
+      });
+      console.log(formattedArraySnippet);
+
+      const result = formattedArraySnippet.join(" ");
+
+      navigator.clipboard.writeText(result);
+
+      return result;
+    }
+
+    function copyToClipboard() {
+      const formattedString = formatSnippet(7, "EchoController01");
+      console.log(formattedString);
+
+      navigator.clipboard.writeText(formattedString);
+    }
+  </script>
+</html>
