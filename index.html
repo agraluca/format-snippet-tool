@@ -40,20 +40,62 @@
         >
           Format and copy to clipboard
         </button>
+        <div class="flex gap-2 items-center">
+          <p class="text-slate-50">Disable line numbers</p>
+          <input
+            id="lineNumbersCheckbox"
+            type="checkbox"
+            class="accent-teal-700"
+            onchange="toggleLineNumbers()"
+          />
+        </div>
       </div>
     </main>
   </body>
 
   <script>
+    function toggleLineNumbers() {
+      const lineNumbersCheckbox = document.getElementById(
+        "lineNumbersCheckbox"
+      );
+      const nameOfFile = document.getElementById("nameOfFile");
+      const startOfLineInput = document.getElementById("startOfLine");
+      if (lineNumbersCheckbox.checked) {
+        startOfLineInput.style.display = "none";
+        nameOfFile.style.display = "none";
+      } else {
+        startOfLineInput.style.display = "block";
+        nameOfFile.style.display = "block";
+      }
+    }
+
     function formatSnippet() {
       const snippet = document.getElementById("snippet").value;
       const nameOfFile = document.getElementById("nameOfFile").value;
       const startOfLine = Number(document.getElementById("startOfLine").value);
+      const lineNumbersCheckbox = document.getElementById(
+        "lineNumbersCheckbox"
+      ).checked;
 
       const snippetWithoutDoubleQuote = snippet.replace(/"/g, "'");
       const snippetArray = snippetWithoutDoubleQuote.split("\n");
       if (!snippetArray[0]) snippetArray.shift();
       if (!snippetArray[snippetArray.length - 1]) snippetArray.pop();
+
+      if (lineNumbersCheckbox) {
+        const formattedArraySnippet = snippetArray.map((item, index) => {
+          if (index === 0) {
+            return `${item}`;
+          }
+          return `\\n${item}`;
+        });
+        console.log(formattedArraySnippet);
+
+        const result = formattedArraySnippet.join(" ");
+
+        return result;
+      }
+
       const formattedArraySnippet = snippetArray.map((item, index) => {
         if (index === 0)
           return `File: ${nameOfFile}\\nCode: Line${startOfLine}: ${item}`;
@@ -62,8 +104,6 @@
       console.log(formattedArraySnippet);
 
       const result = formattedArraySnippet.join(" ");
-
-      navigator.clipboard.writeText(result);
 
       return result;
     }
