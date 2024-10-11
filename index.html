@@ -56,8 +56,8 @@
       if (!snippetArray[snippetArray.length - 1]) snippetArray.pop();
       const formattedArraySnippet = snippetArray.map((item, index) => {
         if (index === 0)
-          return `File: ${nameOfFile}\\nCode: Line${startOfLine}: ${item.trim()}`;
-        return `\\nLine${startOfLine + index}: ${item.trim()}`;
+          return `File: ${nameOfFile}\\nCode: Line${startOfLine}: ${item}`;
+        return `\\nLine${startOfLine + index}: ${item}`;
       });
       console.log(formattedArraySnippet);
 
